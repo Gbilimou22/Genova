@@ -23,6 +23,7 @@ error_log
 # Base de données
 *.sql
 *.sql.gz
+database.sqlite
 
 # Composer
 /vendor/
