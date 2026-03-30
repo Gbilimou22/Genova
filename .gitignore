@@ -28,3 +28,4 @@ database.sqlite
 # Composer
 /vendor/
 composer.lock
+"database.sqlite" 
