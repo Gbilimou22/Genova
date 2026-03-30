@@ -1,0 +1,10 @@
+.git
+.gitignore
+README.md
+logs/
+backups/
+cache/
+.env
+.DS_Store
+Thumbs.db
+*.log
