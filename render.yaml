@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: genova
+    runtime: php
+    buildCommand: composer install
+    startCommand: php -S 0.0.0.0:10000
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+    plan: free

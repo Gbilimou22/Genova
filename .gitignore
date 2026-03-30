@@ -1,0 +1,29 @@
+# Dossiers sensibles
+/logs/
+/cache/
+/backups/
+/uploads/
+
+# Fichiers de configuration
+.env
+config/production.php
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log
+
+# Base de données
+*.sql
+*.sql.gz
+
+# Composer
+/vendor/
+composer.lock

@@ -1,0 +1,27 @@
+# Genova Production - Robots.txt
+User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /services/
+Allow: /portfolio/
+Allow: /about/
+Allow: /contact/
+
+Disallow: /admin/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /logs/
+Disallow: /backups/
+Disallow: /deploy/
+Disallow: /api/
+Disallow: /cron/
+
+# Sitemap
+Sitemap: https://genova.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 5
+
+# Spécifique Google
+User-agent: Googlebot
+Crawl-delay: 2
