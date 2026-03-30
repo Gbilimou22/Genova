@@ -10,8 +10,8 @@ if ($isProduction) {
     define('SITE_TAGLINE', 'Solutions Digitales Innovantes');
     define('SITE_URL', getenv('RENDER_EXTERNAL_URL') ?: 'https://genova-4tld.onrender.com');
     define('SITE_EMAIL', getenv('SITE_EMAIL') ?: 'contact@genova.com');
-    define('SITE_PHONE', getenv('SITE_PHONE') ?: '+33 1 23 45 67 89');
-    define('SITE_ADDRESS', getenv('SITE_ADDRESS') ?: '123 Avenue des Champs-Élysées, 75008 Paris');
+    define('SITE_PHONE', getenv('SITE_PHONE') ?: '+224 624 92 95 47');
+    define('SITE_ADDRESS', getenv('SITE_ADDRESS') ?: 'Guinée-Conakry');
     define('SITE_YEAR', date('Y'));
     
     define('SITE_DESCRIPTION', 'Genova - Agence digitale spécialisée dans la création de sites web');
@@ -63,8 +63,8 @@ if ($isProduction) {
     define('SITE_TAGLINE', 'Solutions Digitales Innovantes');
     define('SITE_URL', 'http://localhost/Genova');
     define('SITE_EMAIL', 'contact@genova.com');
-    define('SITE_PHONE', '+33 1 23 45 67 89');
-    define('SITE_ADDRESS', '123 Avenue des Champs-Élysées, 75008 Paris');
+    define('SITE_PHONE', '+224 624 92 95 47');
+    define('SITE_ADDRESS', 'Guinée-Conakry');
     define('SITE_YEAR', date('Y'));
     
     define('SITE_DESCRIPTION', 'Genova - Agence digitale spécialisée dans la création de sites web, applications mobiles et stratégie digitale.');

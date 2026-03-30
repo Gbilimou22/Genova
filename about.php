@@ -91,12 +91,12 @@ include 'includes/header.php';
             <div class="team-grid">
                 <div class="team-card">
                     <div class="team-image">
-                        <img src="images/team-1.jpg" alt="Sophie Martin">
+                        <img src="images/jo.jpeg" alt="Joseph Kalvin Gbilimou">
                     </div>
                     <div class="team-info">
-                        <h3>Sophie Martin</h3>
-                        <p class="team-position">CEO & Fondatrice</p>
-                        <p>Experte en stratégie digitale avec plus de 10 ans d'expérience</p>
+                        <h3>Joseph Kalvin Gbilimou</h3>
+                        <p class="team-position">Developpeur & Fondateur</p>
+                        <p>Expert en developpement full-stack, mobile hybrid avec plus de 5 ans d'expérience</p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -105,12 +105,12 @@ include 'includes/header.php';
                 </div>
                 <div class="team-card">
                     <div class="team-image">
-                        <img src="images/team-2.jpg" alt="Thomas Bernard">
+                        <img src="images/alpha.jpeg" alt="Mamadou Alpha Diallo">
                     </div>
                     <div class="team-info">
-                        <h3>Thomas Bernard</h3>
+                        <h3>Mamadou Alpha Diallo</h3>
                         <p class="team-position">Directeur Technique</p>
-                        <p>Expert en développement full-stack et architecture cloud</p>
+                        <p>Expert en développement full-stack , Analyste</p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             <a href="#"><i class="fab fa-github"></i></a>
@@ -119,10 +119,10 @@ include 'includes/header.php';
                 </div>
                 <div class="team-card">
                     <div class="team-image">
-                        <img src="images/team-3.jpg" alt="Julie Petit">
+                        <img src="images/arfan.jpeg" alt="Arfan Mohamed Youla">
                     </div>
                     <div class="team-info">
-                        <h3>Julie Petit</h3>
+                        <h3>Arfan Mohamed Youla</h3>
                         <p class="team-position">Lead Designer</p>
                         <p>Spécialiste en UI/UX et design thinking</p>
                         <div class="team-social">
