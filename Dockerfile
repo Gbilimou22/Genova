@@ -1,8 +1,10 @@
-# Utiliser l'image PHP officielle
+# Utiliser l'image PHP avec Apache
 FROM php:8.2-apache
 
-# Installer les extensions nécessaires
-RUN docker-php-ext-install pdo_mysql mysqli
+# Installer les extensions nécessaires (MySQL + PostgreSQL)
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
@@ -19,8 +21,6 @@ COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Exposer le port 80
 EXPOSE 80
 
-# Démarrer Apache
 CMD ["apache2-foreground"]
