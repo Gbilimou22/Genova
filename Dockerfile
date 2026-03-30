@@ -1,10 +1,27 @@
 # Utiliser l'image PHP avec Apache
 FROM php:8.2-apache
 
-# Installer les extensions nécessaires (MySQL + PostgreSQL)
+# Mettre à jour et installer les dépendances système
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo_mysql pdo_pgsql
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Installer les extensions PHP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
+    pdo_pgsql \
+    pgsql \
+    gd \
+    mysqli \
+    zip
 
 # Activer mod_rewrite
 RUN a2enmod rewrite
@@ -20,6 +37,10 @@ COPY . /var/www/html/
 # Configurer les permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
+
+# Activer les logs d'erreur
+RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/errors.ini \
+    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/errors.ini
 
 EXPOSE 80
 
