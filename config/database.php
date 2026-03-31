@@ -44,10 +44,9 @@ class Database {
     }
     
     private function createTables() {
-        // Supprimer les messages d'echo qui causent les problèmes d'en-têtes
-        // Remplacer les echo par des logs silencieux
-        
-        $tables = [
+        // Liste des requêtes SQL pour créer les tables
+        $queries = [
+            // Table contacts
             "CREATE TABLE IF NOT EXISTS contacts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
@@ -59,6 +58,7 @@ class Database {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
+            // Table blog_categories
             "CREATE TABLE IF NOT EXISTS blog_categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
@@ -67,6 +67,7 @@ class Database {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
+            // Table blog_posts
             "CREATE TABLE IF NOT EXISTS blog_posts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
@@ -83,6 +84,7 @@ class Database {
                 FOREIGN KEY (category_id) REFERENCES blog_categories(id)
             )",
             
+            // Table blog_comments
             "CREATE TABLE IF NOT EXISTS blog_comments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 post_id INTEGER NOT NULL,
@@ -95,6 +97,7 @@ class Database {
                 FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE
             )",
             
+            // Table users
             "CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
@@ -104,6 +107,7 @@ class Database {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
+            // Table newsletter
             "CREATE TABLE IF NOT EXISTS newsletter (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
@@ -112,6 +116,21 @@ class Database {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
+            // Table projects (portefeuille)
+            "CREATE TABLE IF NOT EXISTS projects (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                category TEXT,
+                description TEXT,
+                image TEXT,
+                link TEXT,
+                client TEXT,
+                completion_date TEXT,
+                featured INTEGER DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
+            // Table bookings (réservations)
             "CREATE TABLE IF NOT EXISTS bookings (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 service TEXT NOT NULL,
@@ -126,15 +145,17 @@ class Database {
             )"
         ];
         
-        foreach ($tables as $sql) {
+        // Exécuter chaque requête de création de table
+        foreach ($queries as $sql) {
             try {
                 $this->connection->exec($sql);
             } catch(PDOException $e) {
-                // Ignorer les erreurs silencieusement
+                // Ignorer les erreurs silencieusement (table existe déjà)
+                error_log("Erreur création table: " . $e->getMessage());
             }
         }
         
-        // Insérer l'utilisateur admin
+        // Insérer l'utilisateur admin par défaut
         $password = password_hash('admin123', PASSWORD_DEFAULT);
         $stmt = $this->connection->prepare("INSERT OR IGNORE INTO users (username, password, email, role) VALUES (?, ?, ?, ?)");
         $stmt->execute(['admin', $password, 'admin@genova.com', 'admin']);
@@ -143,7 +164,7 @@ class Database {
         $stmt = $this->connection->prepare("INSERT OR IGNORE INTO blog_categories (name, slug) VALUES (?, ?)");
         $stmt->execute(['Actualités', 'actualites']);
         
-        // Pas d'echo, juste un log silencieux
+        // Log silencieux (pas d'echo pour éviter les problèmes d'en-têtes)
         error_log("Tables SQLite créées avec succès");
     }
     

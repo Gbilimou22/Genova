@@ -2,42 +2,72 @@
 session_start();
 require_once '../config/config.php';
 require_once '../config/database.php';
+require_once '../includes/blog-functions.php';
 
-// Vérifier la connexion
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
 $db = Database::getInstance()->getConnection();
+$message = '';
+$error = '';
 
-// Ajouter un projet
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_project'])) {
-    $title = $_POST['title'];
-    $category = $_POST['category'];
-    $description = $_POST['description'];
-    $client = $_POST['client'];
-    $link = $_POST['link'];
+// Vérifier si la table projects existe
+try {
+    $stmt = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='projects'");
+    $tableExists = $stmt->fetch();
     
-    $stmt = $db->prepare("INSERT INTO projects (title, category, description, client, link) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$title, $category, $description, $client, $link]);
+    if (!$tableExists) {
+        // Créer la table si elle n'existe pas
+        $db->exec("CREATE TABLE IF NOT EXISTS projects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            category TEXT,
+            description TEXT,
+            image TEXT,
+            link TEXT,
+            client TEXT,
+            completion_date TEXT,
+            featured INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+        $message = "Table 'projects' créée automatiquement";
+    }
     
-    header('Location: projects.php');
-    exit();
+    // Ajouter un projet
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_project'])) {
+        $title = trim($_POST['title']);
+        $category = trim($_POST['category']);
+        $description = trim($_POST['description']);
+        $client = trim($_POST['client']);
+        $link = trim($_POST['link']);
+        
+        $stmt = $db->prepare("INSERT INTO projects (title, category, description, client, link) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$title, $category, $description, $client, $link]);
+        $message = 'Projet ajouté avec succès';
+        header('Location: projects.php');
+        exit();
+    }
+    
+    // Supprimer un projet
+    if (isset($_GET['delete']) && isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+        $stmt = $db->prepare("DELETE FROM projects WHERE id = ?");
+        $stmt->execute([$id]);
+        $message = 'Projet supprimé';
+        header('Location: projects.php');
+        exit();
+    }
+    
+    // Récupérer tous les projets
+    $stmt = $db->query("SELECT * FROM projects ORDER BY created_at DESC");
+    $projects = $stmt->fetchAll();
+    
+} catch(PDOException $e) {
+    $error = "Erreur base de données : " . $e->getMessage();
+    $projects = [];
 }
-
-// Supprimer un projet
-if (isset($_GET['delete']) && isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    $stmt = $db->prepare("DELETE FROM projects WHERE id = ?");
-    $stmt->execute([$id]);
-    header('Location: projects.php');
-    exit();
-}
-
-// Récupérer tous les projets
-$stmt = $db->query("SELECT * FROM projects ORDER BY created_at DESC");
-$projects = $stmt->fetchAll();
 
 include 'includes/admin-header.php';
 ?>
@@ -50,37 +80,42 @@ include 'includes/admin-header.php';
         </button>
     </div>
     
+    <?php if ($message): ?>
+        <div class="alert alert-success"><?php echo $message; ?></div>
+    <?php endif; ?>
+    
+    <?php if ($error): ?>
+        <div class="alert alert-error"><?php echo $error; ?></div>
+    <?php endif; ?>
+    
     <?php if (empty($projects)): ?>
-    <div class="empty-state">
-        <i class="fas fa-folder-open"></i>
-        <p>Aucun projet pour le moment</p>
-        <button class="btn-add" onclick="document.getElementById('addProjectModal').style.display='flex'">
-            Créer votre premier projet
-        </button>
-    </div>
-    <?php else: ?>
-    <div class="projects-grid">
-        <?php foreach($projects as $project): ?>
-        <div class="project-card">
-            <div class="project-info">
-                <h3><?php echo htmlspecialchars($project['title']); ?></h3>
-                <span class="project-category"><?php echo htmlspecialchars($project['category']); ?></span>
-                <p><?php echo htmlspecialchars(substr($project['description'], 0, 100)) . '...'; ?></p>
-                <?php if($project['client']): ?>
-                <p class="project-client"><strong>Client:</strong> <?php echo htmlspecialchars($project['client']); ?></p>
-                <?php endif; ?>
-            </div>
-            <div class="project-actions">
-                <a href="edit-project.php?id=<?php echo $project['id']; ?>" class="btn-edit">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="?delete=1&id=<?php echo $project['id']; ?>" class="btn-delete" onclick="return confirm('Supprimer ce projet ?')">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </div>
+        <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>Aucun projet pour le moment</p>
         </div>
-        <?php endforeach; ?>
-    </div>
+    <?php else: ?>
+        <div class="projects-grid">
+            <?php foreach($projects as $project): ?>
+            <div class="project-card">
+                <div class="project-info">
+                    <h3><?php echo htmlspecialchars($project['title']); ?></h3>
+                    <span class="project-category"><?php echo htmlspecialchars($project['category']); ?></span>
+                    <p><?php echo htmlspecialchars(substr($project['description'], 0, 100)) . '...'; ?></p>
+                    <?php if($project['client']): ?>
+                    <p class="project-client"><strong>Client:</strong> <?php echo htmlspecialchars($project['client']); ?></p>
+                    <?php endif; ?>
+                </div>
+                <div class="project-actions">
+                    <a href="edit-project.php?id=<?php echo $project['id']; ?>" class="btn-edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="?delete=1&id=<?php echo $project['id']; ?>" class="btn-delete" onclick="return confirm('Supprimer ce projet ?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 </div>
 
@@ -131,25 +166,14 @@ include 'includes/admin-header.php';
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
     border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 1rem;
 }
-
-.page-header h2 {
-    margin: 0;
-}
-
-.page-header h2 i {
-    color: #10b981;
-    margin-right: 0.5rem;
-}
-
 .btn-add {
     background: #10b981;
     color: white;
@@ -157,33 +181,12 @@ include 'includes/admin-header.php';
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background 0.3s;
 }
-
-.btn-add:hover {
-    background: #059669;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 3rem;
-    color: #9ca3af;
-}
-
-.empty-state i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1rem;
 }
-
 .project-card {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -191,19 +194,10 @@ include 'includes/admin-header.php';
     padding: 1rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    transition: all 0.3s;
 }
-
-.project-card:hover {
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.project-info h3 {
+.project-card h3 {
     margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
 }
-
 .project-category {
     display: inline-block;
     background: #e5e7eb;
@@ -212,38 +206,24 @@ include 'includes/admin-header.php';
     font-size: 0.75rem;
     margin-bottom: 0.5rem;
 }
-
-.project-client {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.5rem;
-}
-
 .project-actions {
     display: flex;
     gap: 0.5rem;
 }
-
-.btn-edit, .btn-delete {
+.btn-edit {
+    background: #f59e0b;
+    color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
 }
-
-.btn-edit {
-    background: #3b82f6;
-    color: white;
-}
-
 .btn-delete {
     background: #ef4444;
     color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
 }
-
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -254,54 +234,30 @@ include 'includes/admin-header.php';
     background: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
-
 .modal-content {
     background: white;
     border-radius: 0.5rem;
     width: 90%;
     max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
+    padding: 1.5rem;
 }
-
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
 }
-
-.modal-header h3 {
-    margin: 0;
-}
-
 .close {
-    font-size: 1.5rem;
     cursor: pointer;
-    color: #9ca3af;
+    font-size: 1.5rem;
 }
-
-.close:hover {
-    color: #374151;
-}
-
-.modal-content form {
-    padding: 1rem;
-}
-
 .form-group {
     margin-bottom: 1rem;
 }
-
 .form-group label {
     display: block;
     margin-bottom: 0.25rem;
-    font-weight: 500;
 }
-
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -310,23 +266,32 @@ include 'includes/admin-header.php';
     border: 1px solid #e5e7eb;
     border-radius: 0.25rem;
 }
-
 .btn-submit {
-    width: 100%;
     background: #10b981;
     color: white;
     border: none;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    width: 100%;
 }
-
-.btn-submit:hover {
-    background: #059669;
+.alert {
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
 }
 </style>
 

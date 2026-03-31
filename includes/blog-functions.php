@@ -170,7 +170,7 @@ function getArchives() {
 }
 
 // Ajouter un commentaire
-function addComment($postId, $author, $email, $content, $website = '') {
+/* function addComment($postId, $author, $email, $content, $website = '') {
     $db = Database::getInstance()->getConnection();
     $status = COMMENTS_APPROVAL_REQUIRED ? 'pending' : 'approved';
     
@@ -189,6 +189,22 @@ function addComment($postId, $author, $email, $content, $website = '') {
         error_log("Erreur addComment: " . $e->getMessage());
         return false;
     }
+} */
+function addComment($postId, $author, $email, $content, $website = '') {
+    $db = Database::getInstance()->getConnection();
+    // Forcer l'approbation immédiate
+    $status = 'approved';  // ← MODIFIER ICI
+    
+    $stmt = $db->prepare("INSERT INTO blog_comments (post_id, author, email, website, content, status) 
+                          VALUES (:post_id, :author, :email, :website, :content, :status)");
+    return $stmt->execute([
+        ':post_id' => $postId,
+        ':author' => htmlspecialchars($author),
+        ':email' => htmlspecialchars($email),
+        ':website' => htmlspecialchars($website),
+        ':content' => htmlspecialchars($content),
+        ':status' => $status
+    ]);
 }
 
 // Récupérer les commentaires
