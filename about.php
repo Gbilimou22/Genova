@@ -96,7 +96,7 @@ include 'includes/header.php';
                     <div class="team-info">
                         <h3>Joseph Kalvin Gbilimou</h3>
                         
-                        <p>Expert en developpement full-stack, mobile hybrid avec plus de 5 ans d'expérience</p>
+                        <p>Expert en developpement full-stack, Mobile Hybrid </p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             <a href="#"><i class="fab fa-twitter"></i></a>
