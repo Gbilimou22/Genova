@@ -88,13 +88,13 @@ $currentMeta = $pageMeta[$current_page] ?? $pageMeta['index'];
                     <span></span>
                 </button>
                 
-                <ul class="nav-menu" id="navMenu" role="navigation">
-                <li><a href="index.php" class="<?php echo $current_page == 'index' ? 'active' : ''; ?>">Accueil</a></li>
-                <li><a href="services.php" class="<?php echo $current_page == 'services' ? 'active' : ''; ?>">Services</a></li>
-                <li><a href="portfolio.php" class="<?php echo $current_page == 'portfolio' ? 'active' : ''; ?>">Portfolio</a></li>
-                <li><a href="blog/index.php" class="<?php echo $current_page == 'blog' ? 'active' : ''; ?>">Blog</a></li>
-                <li><a href="about.php" class="<?php echo $current_page == 'about' ? 'active' : ''; ?>">À propos</a></li>
-                <li><a href="contact.php" class="<?php echo $current_page == 'contact' ? 'active' : ''; ?>">Contact</a></li>
+                <ul class="nav-menu" id="navMenu">
+                <li><a href="/index.php" class="<?php echo $current_page == 'index' ? 'active' : ''; ?>">Accueil</a></li>
+                <li><a href="/services.php" class="<?php echo $current_page == 'services' ? 'active' : ''; ?>">Services</a></li>
+                <li><a href="/portfolio.php" class="<?php echo $current_page == 'portfolio' ? 'active' : ''; ?>">Portfolio</a></li>
+                <li><a href="/blog/index.php" class="<?php echo $current_page == 'blog' ? 'active' : ''; ?>">Blog</a></li>
+                <li><a href="/about.php" class="<?php echo $current_page == 'about' ? 'active' : ''; ?>">À propos</a></li>
+                <li><a href="/contact.php" class="<?php echo $current_page == 'contact' ? 'active' : ''; ?>">Contact</a></li>
                 </ul>
                 <div class="nav-actions">
                     <a href="contact.php" class="btn btn-primary btn-sm">Devis gratuit</a>

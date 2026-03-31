@@ -4,6 +4,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="footer-logo">
+                        <a href="/index.php" class="logo">
                         <span class="logo-text">Genova</span>
                         <span class="logo-dot">.</span>
                     </div>
@@ -19,12 +20,14 @@
                 
                 <div class="footer-col">
                     <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="index.php">Accueil</a></li>
-                        <li><a href="services.php">Services</a></li>
-                        <li><a href="about.php">À propos</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                    </ul>
+                <ul>
+                    <li><a href="/index.php">Accueil</a></li>
+                    <li><a href="/services.php">Services</a></li>
+                    <li><a href="/portfolio.php">Portfolio</a></li>
+                    <li><a href="/blog/index.php">Blog</a></li>
+                    <li><a href="/about.php">À propos</a></li>
+                    <li><a href="/contact.php">Contact</a></li>
+                </ul>
                 </div>
                 
                 <div class="footer-col">
