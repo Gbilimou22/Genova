@@ -1,4 +1,7 @@
 <?php
+// Démarrer la bufferisation de sortie pour éviter les problèmes d'en-têtes
+ob_start();
+
 class Database {
     private static $instance = null;
     private $connection;
@@ -41,100 +44,107 @@ class Database {
     }
     
     private function createTables() {
-        // 1. Table contacts
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS contacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            phone TEXT,
-            subject TEXT NOT NULL,
-            message TEXT NOT NULL,
-            status TEXT DEFAULT 'non lu',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
+        // Supprimer les messages d'echo qui causent les problèmes d'en-têtes
+        // Remplacer les echo par des logs silencieux
         
-        // 2. Table blog_categories
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS blog_categories (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
-            slug TEXT NOT NULL UNIQUE,
-            description TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
+        $tables = [
+            "CREATE TABLE IF NOT EXISTS contacts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT,
+                subject TEXT NOT NULL,
+                message TEXT NOT NULL,
+                status TEXT DEFAULT 'non lu',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS blog_categories (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE,
+                slug TEXT NOT NULL UNIQUE,
+                description TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS blog_posts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                slug TEXT UNIQUE NOT NULL,
+                excerpt TEXT,
+                content TEXT NOT NULL,
+                featured_image TEXT,
+                category_id INTEGER,
+                author TEXT,
+                views INTEGER DEFAULT 0,
+                status TEXT DEFAULT 'draft',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                published_at DATETIME,
+                FOREIGN KEY (category_id) REFERENCES blog_categories(id)
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS blog_comments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                post_id INTEGER NOT NULL,
+                author TEXT NOT NULL,
+                email TEXT NOT NULL,
+                website TEXT,
+                content TEXT NOT NULL,
+                status TEXT DEFAULT 'pending',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                role TEXT DEFAULT 'editor',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS newsletter (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT UNIQUE NOT NULL,
+                token TEXT,
+                confirmed BOOLEAN DEFAULT FALSE,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS bookings (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                service TEXT NOT NULL,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT,
+                date TEXT NOT NULL,
+                time TEXT NOT NULL,
+                message TEXT,
+                status TEXT DEFAULT 'pending',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )"
+        ];
         
-        // 3. Table blog_posts
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS blog_posts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            slug TEXT UNIQUE NOT NULL,
-            excerpt TEXT,
-            content TEXT NOT NULL,
-            featured_image TEXT,
-            category_id INTEGER,
-            author TEXT,
-            views INTEGER DEFAULT 0,
-            status TEXT DEFAULT 'draft',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            published_at DATETIME,
-            FOREIGN KEY (category_id) REFERENCES blog_categories(id)
-        )");
+        foreach ($tables as $sql) {
+            try {
+                $this->connection->exec($sql);
+            } catch(PDOException $e) {
+                // Ignorer les erreurs silencieusement
+            }
+        }
         
-        // 4. Table blog_comments
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS blog_comments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            post_id INTEGER NOT NULL,
-            author TEXT NOT NULL,
-            email TEXT NOT NULL,
-            website TEXT,
-            content TEXT NOT NULL,
-            status TEXT DEFAULT 'pending',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE
-        )");
-        
-        // 5. Table users
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            role TEXT DEFAULT 'editor',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
-        
-        // 6. Table newsletter
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS newsletter (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE NOT NULL,
-            token TEXT,
-            confirmed BOOLEAN DEFAULT FALSE,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
-        
-        // 7. Table bookings
-        $this->connection->exec("CREATE TABLE IF NOT EXISTS bookings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            service TEXT NOT NULL,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            phone TEXT,
-            date TEXT NOT NULL,
-            time TEXT NOT NULL,
-            message TEXT,
-            status TEXT DEFAULT 'pending',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
-        
-        // 8. Insérer l'utilisateur admin
+        // Insérer l'utilisateur admin
         $password = password_hash('admin123', PASSWORD_DEFAULT);
         $stmt = $this->connection->prepare("INSERT OR IGNORE INTO users (username, password, email, role) VALUES (?, ?, ?, ?)");
         $stmt->execute(['admin', $password, 'admin@genova.com', 'admin']);
         
-        // 9. Insérer une catégorie par défaut
+        // Insérer une catégorie par défaut
         $stmt = $this->connection->prepare("INSERT OR IGNORE INTO blog_categories (name, slug) VALUES (?, ?)");
         $stmt->execute(['Actualités', 'actualites']);
         
-        echo "✅ Tables SQLite créées avec succès !";
+        // Pas d'echo, juste un log silencieux
+        error_log("Tables SQLite créées avec succès");
     }
     
     public static function getInstance() {

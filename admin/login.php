@@ -1,4 +1,7 @@
 <?php
+// Démarrer la bufferisation au tout début
+ob_start();
+
 session_start();
 require_once '../config/config.php';
 require_once '../config/database.php';
@@ -72,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Générer un nouveau token CSRF
 $csrf_token = generateCSRFToken();
+// À la fin du fichier, avant la fermeture PHP
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

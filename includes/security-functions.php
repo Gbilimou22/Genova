@@ -134,7 +134,7 @@ function verifySecureHash($string, $hash) {
 
 // Nettoyer les données de session
 function regenerateSession() {
-    if (SESSION_REGENERATE_ID) {
+    if (SESSION_REGENERATE_ID && !headers_sent()) {
         session_regenerate_id(true);
     }
 }
