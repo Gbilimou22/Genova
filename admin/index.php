@@ -28,8 +28,13 @@ $stmt = $db->query("SELECT COUNT(*) FROM newsletter");
 $stats['newsletter'] = $stmt->fetchColumn();
 
 // Nombre de projets
-$stmt = $db->query("SELECT COUNT(*) FROM projects");
-$stats['projects'] = $stmt->fetchColumn();
+// Vérifier si la table projects existe
+try {
+    $stmt = $db->query("SELECT COUNT(*) FROM projects");
+    $stats['projects'] = $stmt->fetchColumn();
+} catch(PDOException $e) {
+    $stats['projects'] = 0; // Table n'existe pas encore
+}
 
 // Derniers messages
 $stmt = $db->query("SELECT * FROM contacts ORDER BY created_at DESC LIMIT 5");
