@@ -95,7 +95,7 @@ include 'includes/header.php';
                     </div>
                     <div class="team-info">
                         <h3>Joseph Kalvin Gbilimou</h3>
-                        <p class="team-position">Developpeur & Fondateur</p>
+                        
                         <p>Expert en developpement full-stack, mobile hybrid avec plus de 5 ans d'expérience</p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -109,7 +109,7 @@ include 'includes/header.php';
                     </div>
                     <div class="team-info">
                         <h3>Mamadou Alpha Diallo</h3>
-                        <p class="team-position">Directeur Technique</p>
+                    
                         <p>Expert en développement full-stack , Analyste</p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -123,8 +123,98 @@ include 'includes/header.php';
                     </div>
                     <div class="team-info">
                         <h3>Arfan Mohamed Youla</h3>
-                        <p class="team-position">Lead Designer</p>
+                        
                         <p>Spécialiste en UI/UX et design thinking</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/sacko.jpeg" alt="Yacouba Sacko">
+                    </div>
+                    <div class="team-info">
+                        <h3>Yacouba Sacko</h3>
+                       
+                        <p>Expert en maintenance réseau</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/sory.jpeg" alt="Ibrahima Sory Fofana">
+                    </div>
+                    <div class="team-info">
+                        <h3>Ibrahima Sory Fofana</h3>
+                        
+                        <p>Technicien</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/bouba.jpeg" alt="Boubacar Diallo">
+                    </div>
+                    <div class="team-info">
+                        <h3>Boubacar Diallo</h3>
+                        
+                        <p>Administrateur Sécurité</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/saliou.jpeg" alt="Saliou Diallo">
+                    </div>
+                    <div class="team-info">
+                        <h3>Saliou Diallo</h3>
+                        
+                        <p>Expert en developpement</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/..........jpeg" alt="Saliou ..........">
+                    </div>
+                    <div class="team-info">
+                        <h3>............</h3>
+                        
+                        <p>Graphiste</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="images/.........jpeg" alt="Saliou ..........">
+                    </div>
+                    <div class="team-info">
+                        <h3>............</h3>
+                        
+                        <p>Graphiste</p>
                         <div class="team-social">
                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             <a href="#"><i class="fab fa-dribbble"></i></a>
@@ -139,11 +229,11 @@ include 'includes/header.php';
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">150+</div>
+                    <div class="stat-number">10+</div>
                     <div class="stat-label">Projets réalisés</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">80+</div>
+                    <div class="stat-number">10+</div>
                     <div class="stat-label">Clients satisfaits</div>
                 </div>
                 <div class="stat-item">

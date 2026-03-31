@@ -29,3 +29,10 @@ database.sqlite
 /vendor/
 composer.lock
 "database.sqlite" 
+
+database.sqlite
+logs/
+cache/
+backups/
+.DS_Store
+Thumbs.db
