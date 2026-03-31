@@ -32,18 +32,18 @@ include 'includes/header.php';
                             <i class="fas fa-history"></i>
                         </div>
                         <h2>Notre histoire</h2>
-                        <p>Fondée en 2020, Genova est née de la passion commune pour le digital et l'innovation. Aujourd'hui, nous sommes une équipe de passionnés qui mettent leur expertise au service de vos projets.</p>
+                        <p>Fondée en 2024, Genova est née de la passion commune pour le digital et l'innovation. Aujourd'hui, nous sommes une équipe de passionnés qui mettent leur expertise au service de vos projets.</p>
                         <div class="timeline">
                             <div class="timeline-item">
-                                <span class="year">2020</span>
+                                <span class="year">2024</span>
                                 <span class="event">Création de Genova</span>
                             </div>
                             <div class="timeline-item">
-                                <span class="year">2022</span>
-                                <span class="event">+50 projets réalisés</span>
+                                <span class="year">2025</span>
+                                <span class="event">+20 projets réalisés</span>
                             </div>
                             <div class="timeline-item">
-                                <span class="year">2024</span>
+                                <span class="year">2025</span>
                                 <span class="event">Équipe de 10 experts</span>
                             </div>
                         </div>
@@ -192,35 +192,6 @@ include 'includes/header.php';
                     </div>
                 </div>
 
-                <div class="team-card">
-                    <div class="team-image">
-                        <img src="images/..........jpeg" alt="Saliou ..........">
-                    </div>
-                    <div class="team-info">
-                        <h3>............</h3>
-                        
-                        <p>Graphiste</p>
-                        <div class="team-social">
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-image">
-                        <img src="images/.........jpeg" alt="Saliou ..........">
-                    </div>
-                    <div class="team-info">
-                        <h3>............</h3>
-                        
-                        <p>Graphiste</p>
-                        <div class="team-social">
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
